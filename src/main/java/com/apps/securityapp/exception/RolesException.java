@@ -1,5 +1,5 @@
 package com.apps.securityapp.exception;
 
-public interface DuplicateRecordException {
+public interface RolesException {
     String getExceptionMessage();
 }

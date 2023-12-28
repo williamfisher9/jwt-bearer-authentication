@@ -41,15 +41,15 @@ public enum ERole {
         return name;
     }
 
-    public ERole getByCode(String code){
+    public static ERole getByCode(String code){
         return BY_CODE.get(code);
     }
 
-    public ERole getByName(String name){
+    public static ERole getByName(String name){
         return BY_NAME.get(name);
     }
 
-    public ERole getByNumCode(int numCode){
+    public static ERole getByNumCode(int numCode){
         return BY_NUM_CODE.get(numCode);
     }
 }

@@ -7,7 +7,7 @@ public class DuplicateEmailException extends RuntimeException implements Duplica
 
 
     @Override
-    public String getCustomMessage() {
+    public String getExceptionMessage() {
         return this.getMessage();
     }
 }

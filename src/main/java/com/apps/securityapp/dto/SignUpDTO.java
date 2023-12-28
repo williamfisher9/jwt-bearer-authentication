@@ -20,9 +20,9 @@ public class SignUpDTO {
     private String fullName;
 
     @NotEmpty(message = "Roles list should not be empty!")
-    private Set<Role> roles;
+    private Set<String> roles;
 
-    public SignUpDTO(String username, String password, String email, String fullName, Set<Role> roles) {
+    public SignUpDTO(String username, String password, String email, String fullName, Set<String> roles) {
         this.username = username;
         this.password = password;
         this.email = email;
@@ -62,11 +62,11 @@ public class SignUpDTO {
         this.fullName = fullName;
     }
 
-    public Set<Role> getRoles() {
+    public Set<String> getRoles() {
         return roles;
     }
 
-    public void setRoles(Set<Role> roles) {
+    public void setRoles(Set<String> roles) {
         this.roles = roles;
     }
 }
