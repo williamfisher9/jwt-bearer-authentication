@@ -1,6 +1,5 @@
 package com.apps.securityapp.dto;
 
-import com.apps.securityapp.model.Role;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 

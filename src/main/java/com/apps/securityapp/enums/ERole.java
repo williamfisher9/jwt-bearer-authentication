@@ -1,4 +1,4 @@
-package com.apps.securityapp.model;
+package com.apps.securityapp.enums;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -4,11 +4,12 @@ import com.apps.securityapp.dao.UserRepository;
 import com.apps.securityapp.dto.LoginDTO;
 import com.apps.securityapp.dto.ResponseMessageDTO;
 import com.apps.securityapp.dto.SignUpDTO;
+import com.apps.securityapp.enums.ResponseType;
 import com.apps.securityapp.exception.DuplicateEmailException;
 import com.apps.securityapp.exception.DuplicateUsernameException;
 import com.apps.securityapp.exception.EmptyRolesSetException;
 import com.apps.securityapp.exception.InvalidRoleException;
-import com.apps.securityapp.model.ERole;
+import com.apps.securityapp.enums.ERole;
 import com.apps.securityapp.model.Role;
 import com.apps.securityapp.model.User;
 import com.apps.securityapp.security.JwtUtils;
@@ -21,6 +22,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -72,7 +74,14 @@ public class AppServiceImpl implements AppService{
         User savedUser = userRepository.save(user);
 
         if(savedUser.getId() != 0){
-            return new ResponseEntity<>(new ResponseMessageDTO(savedUser.toString()), HttpStatus.CREATED);
+            ResponseMessageDTO responseMessageDTO = new ResponseMessageDTO();
+            responseMessageDTO.setResponseType(ResponseType.SUCCESS);
+            responseMessageDTO.setResponseDateTime(LocalDateTime.now());
+            responseMessageDTO.setHttpStatusDescription(HttpStatus.CREATED.toString());
+            responseMessageDTO.setHttpStatusCode(HttpStatus.CREATED.value());
+            responseMessageDTO.setResponse(savedUser.toString());
+
+            return new ResponseEntity<>(responseMessageDTO, HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(null, HttpStatus.UNPROCESSABLE_ENTITY);
         }
@@ -84,6 +93,14 @@ public class AppServiceImpl implements AppService{
         );
 
         String token = jwtUtils.generateJwtToken(authentication);
-        return ResponseEntity.ok(new ResponseMessageDTO(token));
+
+        ResponseMessageDTO responseMessageDTO = new ResponseMessageDTO();
+        responseMessageDTO.setResponseType(ResponseType.SUCCESS);
+        responseMessageDTO.setResponseDateTime(LocalDateTime.now());
+        responseMessageDTO.setHttpStatusDescription(HttpStatus.OK.getReasonPhrase());
+        responseMessageDTO.setHttpStatusCode(HttpStatus.OK.value());
+        responseMessageDTO.setResponse(token);
+
+        return ResponseEntity.ok(responseMessageDTO);
     }
 }

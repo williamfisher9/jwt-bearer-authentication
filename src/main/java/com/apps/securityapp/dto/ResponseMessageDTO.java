@@ -1,10 +1,25 @@
 package com.apps.securityapp.dto;
 
+import com.apps.securityapp.enums.ResponseType;
+
+import java.time.LocalDateTime;
+
 public class ResponseMessageDTO {
+    private ResponseType responseType;
+    private int httpStatusCode;
+    private String httpStatusDescription;
+    private LocalDateTime responseDateTime;
     private String response;
 
-    public ResponseMessageDTO(String response) {
-        this.response = response;
+    public ResponseMessageDTO() {
+    }
+
+    public ResponseType getResponseType() {
+        return responseType;
+    }
+
+    public void setResponseType(ResponseType responseType) {
+        this.responseType = responseType;
     }
 
     public String getResponse() {
@@ -13,5 +28,29 @@ public class ResponseMessageDTO {
 
     public void setResponse(String response) {
         this.response = response;
+    }
+
+    public int getHttpStatusCode() {
+        return httpStatusCode;
+    }
+
+    public void setHttpStatusCode(int httpStatusCode) {
+        this.httpStatusCode = httpStatusCode;
+    }
+
+    public String getHttpStatusDescription() {
+        return httpStatusDescription;
+    }
+
+    public void setHttpStatusDescription(String httpStatusDescription) {
+        this.httpStatusDescription = httpStatusDescription;
+    }
+
+    public LocalDateTime getResponseDateTime() {
+        return responseDateTime;
+    }
+
+    public void setResponseDateTime(LocalDateTime responseDateTime) {
+        this.responseDateTime = responseDateTime;
     }
 }

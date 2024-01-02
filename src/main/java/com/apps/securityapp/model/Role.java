@@ -1,5 +1,6 @@
 package com.apps.securityapp.model;
 
+import com.apps.securityapp.enums.ERole;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 
