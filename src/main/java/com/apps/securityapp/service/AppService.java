@@ -8,5 +8,5 @@ import org.springframework.http.ResponseEntity;
 
 public interface AppService {
     ResponseEntity<ResponseMessageDTO> createUser(SignUpDTO signUpDTO);
-    ResponseEntity<ResponseMessageDTO> logUserIn(LoginDTO loginDTO);
+    ResponseEntity<ResponseMessageDTO> login(LoginDTO loginDTO);
 }

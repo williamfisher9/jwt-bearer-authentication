@@ -23,7 +23,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 @Service
@@ -64,6 +66,10 @@ public class AppServiceImpl implements AppService{
             userRoles.add(new Role(eRole));
         }
 
+        if(userRoles.isEmpty()){
+            throw new EmptyRolesSetException("Roles set is empty!");
+        }
+
         User user = new User();
         user.setEmail(dtoUser.getEmail());
         user.setUsername(dtoUser.getUsername());
@@ -73,24 +79,41 @@ public class AppServiceImpl implements AppService{
 
         User savedUser = userRepository.save(user);
 
+        ResponseMessageDTO responseMessageDTO = new ResponseMessageDTO();
         if(savedUser.getId() != 0){
-            ResponseMessageDTO responseMessageDTO = new ResponseMessageDTO();
             responseMessageDTO.setResponseType(ResponseType.SUCCESS);
             responseMessageDTO.setResponseDateTime(LocalDateTime.now());
             responseMessageDTO.setHttpStatusDescription(HttpStatus.CREATED.toString());
             responseMessageDTO.setHttpStatusCode(HttpStatus.CREATED.value());
-            responseMessageDTO.setResponse(savedUser.toString());
 
-            return new ResponseEntity<>(responseMessageDTO, HttpStatus.CREATED);
+            Map<String, Object> createdUserMap = new HashMap<>();
+            createdUserMap.put("id", savedUser.getId());
+            createdUserMap.put("username", savedUser.getUsername());
+            createdUserMap.put("email", savedUser.getEmail());
+            createdUserMap.put("roles", savedUser.getRoles());
+
+            responseMessageDTO.setResponse(createdUserMap);
+
         } else {
-            return new ResponseEntity<>(null, HttpStatus.UNPROCESSABLE_ENTITY);
+            responseMessageDTO.setResponseType(ResponseType.ERROR);
+            responseMessageDTO.setResponseDateTime(LocalDateTime.now());
+            responseMessageDTO.setHttpStatusDescription(HttpStatus.UNPROCESSABLE_ENTITY.toString());
+            responseMessageDTO.setHttpStatusCode(HttpStatus.UNPROCESSABLE_ENTITY.value());
         }
+
+        return new ResponseEntity<>(
+                responseMessageDTO,
+                responseMessageDTO.getResponseType().getDescription().equals("SUCCESS") ?
+                        HttpStatus.CREATED :
+                        HttpStatus.UNPROCESSABLE_ENTITY
+                );
     }
 
-    public ResponseEntity<ResponseMessageDTO> logUserIn(LoginDTO loginDTO){
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword())
-        );
+    public ResponseEntity<ResponseMessageDTO> login(LoginDTO loginDTO){
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                new UsernamePasswordAuthenticationToken(loginDTO.getUsername(), loginDTO.getPassword());
+
+        Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 
         String token = jwtUtils.generateJwtToken(authentication);
 
@@ -99,8 +122,10 @@ public class AppServiceImpl implements AppService{
         responseMessageDTO.setResponseDateTime(LocalDateTime.now());
         responseMessageDTO.setHttpStatusDescription(HttpStatus.OK.getReasonPhrase());
         responseMessageDTO.setHttpStatusCode(HttpStatus.OK.value());
-        responseMessageDTO.setResponse(token);
+        Map<String, String> jwtTokenMap = new HashMap<>();
+        jwtTokenMap.put("token", token);
+        responseMessageDTO.setResponse(jwtTokenMap);
 
-        return ResponseEntity.ok(responseMessageDTO);
+        return new ResponseEntity<>(responseMessageDTO, HttpStatus.OK);
     }
 }

@@ -9,7 +9,7 @@ public class ResponseMessageDTO {
     private int httpStatusCode;
     private String httpStatusDescription;
     private LocalDateTime responseDateTime;
-    private String response;
+    private Object response;
 
     public ResponseMessageDTO() {
     }
@@ -22,11 +22,11 @@ public class ResponseMessageDTO {
         this.responseType = responseType;
     }
 
-    public String getResponse() {
+    public Object getResponse() {
         return response;
     }
 
-    public void setResponse(String response) {
+    public void setResponse(Object response) {
         this.response = response;
     }
 

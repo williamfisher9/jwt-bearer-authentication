@@ -12,14 +12,14 @@ import java.time.LocalDateTime;
 @CrossOrigin
 @RequestMapping("/api/v1/app")
 public class AppController {
-    @RequestMapping(method = RequestMethod.GET, path = "/secure")
+    @RequestMapping(method = RequestMethod.GET, path = "/private")
     public ResponseEntity<ResponseMessageDTO> getSecureContents(){
         ResponseMessageDTO responseMessageDTO = new ResponseMessageDTO();
         responseMessageDTO.setResponseType(ResponseType.SUCCESS);
         responseMessageDTO.setResponseDateTime(LocalDateTime.now());
         responseMessageDTO.setHttpStatusDescription(HttpStatus.OK.toString());
         responseMessageDTO.setHttpStatusCode(HttpStatus.OK.value());
-        responseMessageDTO.setResponse("Secure Contents...");
+        responseMessageDTO.setResponse("Private contents...");
         return new ResponseEntity<>(responseMessageDTO, HttpStatus.OK);
     }
 
@@ -30,7 +30,7 @@ public class AppController {
         responseMessageDTO.setResponseDateTime(LocalDateTime.now());
         responseMessageDTO.setHttpStatusDescription(HttpStatus.OK.toString());
         responseMessageDTO.setHttpStatusCode(HttpStatus.OK.value());
-        responseMessageDTO.setResponse("Public Contents...");
+        responseMessageDTO.setResponse("Public contents...");
         return new ResponseEntity<>(responseMessageDTO, HttpStatus.OK);
     }
 }

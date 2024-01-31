@@ -1,6 +1,5 @@
 package com.apps.securityapp.security;
 
-import com.apps.securityapp.service.UserDetailsServiceImpl;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,26 +29,34 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        LOG.info("executing JWT filter........................");
         if(request.getHeader("Authorization") != null){
-            String token = jwtUtils.parseAuthorizationHeader(request);
-            if(token != null && jwtUtils.validateToken(token)){
-                String username = jwtUtils.getUsernameFromToken(token);
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-
-                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
-                        new UsernamePasswordAuthenticationToken(userDetails.getUsername(),
-                                userDetails.getPassword(),
-                                userDetails.getAuthorities());
-
-                LOG.info("User {} is {}",
-                        userDetails.getUsername(),
-                        usernamePasswordAuthenticationToken.isAuthenticated() ? "authenticated" : "not authenticated");
-
-                SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+            String jwtToken = jwtUtils.parseAuthorizationHeader(request);
+            try {
+                jwtUtils.validateToken(jwtToken);
+                setSecurityContext(jwtToken);
+            } catch (Exception e){
+                LOG.error("ERROR IN JWT TOKEN {}", e.getMessage());
             }
         }
 
         filterChain.doFilter(request, response);
+    }
+
+    private void setSecurityContext(String jwtToken) {
+        String username = jwtUtils.getUsernameFromToken(jwtToken);
+        UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+
+        UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                new UsernamePasswordAuthenticationToken(userDetails.getUsername(),
+                        userDetails.getPassword(),
+                        userDetails.getAuthorities());
+
+        SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+    }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String path = request.getRequestURI();
+        return path.startsWith("/api/v1/auth");
     }
 }

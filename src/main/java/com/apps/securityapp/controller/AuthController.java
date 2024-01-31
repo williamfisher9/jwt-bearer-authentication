@@ -27,6 +27,6 @@ public class AuthController {
 
     @RequestMapping(method = RequestMethod.POST, path = "/login")
     public ResponseEntity<ResponseMessageDTO> login(@Valid @RequestBody LoginDTO loginDTO){
-        return service.logUserIn(loginDTO);
+        return service.login(loginDTO);
     }
 }

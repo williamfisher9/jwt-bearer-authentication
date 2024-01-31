@@ -41,10 +41,6 @@ public class Role implements Serializable, GrantedAuthority {
         this.id = id;
     }
 
-    public ERole getRole() {
-        return role;
-    }
-
     public void setRole(ERole role) {
         this.role = role;
     }

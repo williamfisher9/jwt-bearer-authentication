@@ -16,14 +16,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Component
-public class CustomAuthEntryPoint implements AuthenticationEntryPoint {
-    private static final Logger LOG = LoggerFactory.getLogger(CustomAuthEntryPoint.class);
+public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
+    private static final Logger LOG = LoggerFactory.getLogger(CustomAuthenticationEntryPoint.class);
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
         LOG.error("Unauthorized error: {}", authException.getMessage());
 
         response.setContentType(MediaType.APPLICATION_JSON_VALUE);
         response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        response.setHeader("WWW-Authenticate", "Bearer realm=http://localhost:9999/api/v1, charset=\"UTF-8\"");
 
         final Map<String, Object> body = new HashMap<>();
         body.put("status", HttpServletResponse.SC_UNAUTHORIZED);
