@@ -9,4 +9,6 @@ import org.springframework.http.ResponseEntity;
 public interface AppService {
     ResponseEntity<ResponseMessageDTO> createUser(SignUpDTO signUpDTO);
     ResponseEntity<ResponseMessageDTO> login(LoginDTO loginDTO);
+    ResponseEntity<ResponseMessageDTO> getPrivateContents();
+    ResponseEntity<ResponseMessageDTO> getPublicContents();
 }

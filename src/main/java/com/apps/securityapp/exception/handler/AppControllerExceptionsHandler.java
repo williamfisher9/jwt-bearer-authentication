@@ -33,7 +33,7 @@ public class AppControllerExceptionsHandler {
     }
 
     @ExceptionHandler({EmptyRolesSetException.class, InvalidRoleException.class})
-    public ResponseEntity<ResponseMessageDTO> handleRolesException(RolesException exc){
+    public ResponseEntity<ResponseMessageDTO> handleRolesException(RoleException exc){
         return new ResponseEntity<>(prepareResponseMessageDTO(exc.getExceptionMessage()), HttpStatus.BAD_REQUEST);
     }
 

@@ -14,7 +14,6 @@ public class AppInitialData implements CommandLineRunner {
         this.userRepository = userRepository;
     }
 
-
     @Override
     public void run(String... args) throws Exception {
         userRepository.deleteAll();

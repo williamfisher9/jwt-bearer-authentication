@@ -1,5 +1,5 @@
 package com.apps.securityapp.exception;
 
-public interface RolesException {
+public interface RoleException {
     String getExceptionMessage();
 }

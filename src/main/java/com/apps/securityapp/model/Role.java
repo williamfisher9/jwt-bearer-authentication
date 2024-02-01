@@ -1,6 +1,6 @@
 package com.apps.securityapp.model;
 
-import com.apps.securityapp.enums.ERole;
+import com.apps.securityapp.enums.RoleType;
 import jakarta.persistence.*;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -19,7 +19,7 @@ public class Role implements Serializable, GrantedAuthority {
     private Long id;
 
     @Enumerated(EnumType.STRING)
-    private ERole role;
+    private RoleType role;
 
     @Override
     public String getAuthority() {
@@ -29,7 +29,7 @@ public class Role implements Serializable, GrantedAuthority {
     public Role() {
     }
 
-    public Role(ERole role) {
+    public Role(RoleType role) {
         this.role = role;
     }
 
@@ -41,7 +41,7 @@ public class Role implements Serializable, GrantedAuthority {
         this.id = id;
     }
 
-    public void setRole(ERole role) {
+    public void setRole(RoleType role) {
         this.role = role;
     }
 

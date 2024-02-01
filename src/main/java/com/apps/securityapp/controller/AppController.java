@@ -1,36 +1,30 @@
 package com.apps.securityapp.controller;
 
 import com.apps.securityapp.dto.ResponseMessageDTO;
-import com.apps.securityapp.enums.ResponseType;
-import org.springframework.http.HttpStatus;
+import com.apps.securityapp.service.AppService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 
 @RestController
 @CrossOrigin
 @RequestMapping("/api/v1/app")
 public class AppController {
+    private final AppService appService;
+
+    @Autowired
+    public AppController(AppService appService){
+        this.appService = appService;
+    }
+
     @RequestMapping(method = RequestMethod.GET, path = "/private")
-    public ResponseEntity<ResponseMessageDTO> getSecureContents(){
-        ResponseMessageDTO responseMessageDTO = new ResponseMessageDTO();
-        responseMessageDTO.setResponseType(ResponseType.SUCCESS);
-        responseMessageDTO.setResponseDateTime(LocalDateTime.now());
-        responseMessageDTO.setHttpStatusDescription(HttpStatus.OK.toString());
-        responseMessageDTO.setHttpStatusCode(HttpStatus.OK.value());
-        responseMessageDTO.setResponse("Private contents...");
-        return new ResponseEntity<>(responseMessageDTO, HttpStatus.OK);
+    public ResponseEntity<ResponseMessageDTO> getPrivateContents(){
+        return appService.getPrivateContents();
     }
 
     @RequestMapping(method = RequestMethod.GET, path = "/public")
     public ResponseEntity<ResponseMessageDTO> getPublicContents(){
-        ResponseMessageDTO responseMessageDTO = new ResponseMessageDTO();
-        responseMessageDTO.setResponseType(ResponseType.SUCCESS);
-        responseMessageDTO.setResponseDateTime(LocalDateTime.now());
-        responseMessageDTO.setHttpStatusDescription(HttpStatus.OK.toString());
-        responseMessageDTO.setHttpStatusCode(HttpStatus.OK.value());
-        responseMessageDTO.setResponse("Public contents...");
-        return new ResponseEntity<>(responseMessageDTO, HttpStatus.OK);
+        return appService.getPublicContents();
     }
 }

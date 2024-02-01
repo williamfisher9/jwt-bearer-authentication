@@ -1,6 +1,6 @@
 package com.apps.securityapp.exception;
 
-public class EmptyRolesSetException extends RuntimeException implements RolesException{
+public class EmptyRolesSetException extends RuntimeException implements RoleException{
     public EmptyRolesSetException(String message){
         super(message);
     }

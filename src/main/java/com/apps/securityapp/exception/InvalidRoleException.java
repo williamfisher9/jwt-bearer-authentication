@@ -1,6 +1,6 @@
 package com.apps.securityapp.exception;
 
-public class InvalidRoleException extends RuntimeException implements RolesException{
+public class InvalidRoleException extends RuntimeException implements RoleException{
     public InvalidRoleException(String message){
         super(message);
     }

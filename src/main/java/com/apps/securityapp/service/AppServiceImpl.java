@@ -5,11 +5,11 @@ import com.apps.securityapp.dto.LoginDTO;
 import com.apps.securityapp.dto.ResponseMessageDTO;
 import com.apps.securityapp.dto.SignUpDTO;
 import com.apps.securityapp.enums.ResponseType;
+import com.apps.securityapp.enums.RoleType;
 import com.apps.securityapp.exception.DuplicateEmailException;
 import com.apps.securityapp.exception.DuplicateUsernameException;
 import com.apps.securityapp.exception.EmptyRolesSetException;
 import com.apps.securityapp.exception.InvalidRoleException;
-import com.apps.securityapp.enums.ERole;
 import com.apps.securityapp.model.Role;
 import com.apps.securityapp.model.User;
 import com.apps.securityapp.security.JwtUtils;
@@ -59,7 +59,7 @@ public class AppServiceImpl implements AppService{
 
         Set<Role> userRoles = new HashSet<>();
         for (String roleName:dtoUser.getRoles()){
-            ERole eRole = ERole.getByName(roleName);
+            RoleType eRole = RoleType.getByName(roleName);
             if(eRole == null){
                     throw new InvalidRoleException(roleName + ": Invalid role was received!");
             }
@@ -126,6 +126,28 @@ public class AppServiceImpl implements AppService{
         jwtTokenMap.put("token", token);
         responseMessageDTO.setResponse(jwtTokenMap);
 
+        return new ResponseEntity<>(responseMessageDTO, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<ResponseMessageDTO> getPrivateContents() {
+        ResponseMessageDTO responseMessageDTO = new ResponseMessageDTO();
+        responseMessageDTO.setResponseType(ResponseType.SUCCESS);
+        responseMessageDTO.setResponseDateTime(LocalDateTime.now());
+        responseMessageDTO.setHttpStatusDescription(HttpStatus.OK.toString());
+        responseMessageDTO.setHttpStatusCode(HttpStatus.OK.value());
+        responseMessageDTO.setResponse("Private contents...");
+        return new ResponseEntity<>(responseMessageDTO, HttpStatus.OK);
+    }
+
+    @Override
+    public ResponseEntity<ResponseMessageDTO> getPublicContents() {
+        ResponseMessageDTO responseMessageDTO = new ResponseMessageDTO();
+        responseMessageDTO.setResponseType(ResponseType.SUCCESS);
+        responseMessageDTO.setResponseDateTime(LocalDateTime.now());
+        responseMessageDTO.setHttpStatusDescription(HttpStatus.OK.toString());
+        responseMessageDTO.setHttpStatusCode(HttpStatus.OK.value());
+        responseMessageDTO.setResponse("Public contents...");
         return new ResponseEntity<>(responseMessageDTO, HttpStatus.OK);
     }
 }
